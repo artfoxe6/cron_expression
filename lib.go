@@ -2,9 +2,9 @@ package cron_expression
 
 import (
 	"errors"
-	"log"
 	"regexp"
 	"sort"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -121,15 +121,9 @@ func cronRuleParse(str string, limit []int) ([]int, error) {
 	if b, _ := regexp.MatchString(`^\d{1,2}-\d{1,2}/\d{1,2}$`, str); b {
 		arr := strings.Split(str, "/")
 		temp := make([]int, 0)
-		for i := 0; i < len(limitList); i += numberMaps[arr[1]] {
-			temp = append(temp, limitList[i])
-		}
 		subArr := strings.Split(arr[0], "-")
-		for k, v := range temp {
-			if v < numberMaps[subArr[0]] || v > numberMaps[subArr[1]] {
-				log.Fatalln(temp[:k], temp[k+1:])
-				//temp = append(temp[:k], temp[k+1:]...)
-			}
+		for i := numberMaps[subArr[0]]; i < numberMaps[subArr[1]]; i += numberMaps[arr[1]] {
+			temp = append(temp, numberMaps[strconv.Itoa(i)])
 		}
 		return temp, nil
 	}

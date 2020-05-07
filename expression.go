@@ -2,7 +2,6 @@ package cron_expression
 
 import (
 	"errors"
-	"fmt"
 	"strings"
 	"time"
 )
@@ -210,7 +209,6 @@ func (expr *Expression) weekToDay(now time.Time, change *change, nextAt *nextAt)
 	}
 	//dom和dow任意一个存在 间隔符 / 将形成交集
 	days := getDayByWeek(now.Year(), nextAt.month, expr.Dow, expr.LocationName, expr.LocationOffset)
-	fmt.Println(days)
 	if strings.Contains(ruleItems[DowKey], "*/") || strings.Contains(ruleItems[DomKey], "*/") {
 		expr.Dom = arrayIntersect(expr.Dom, days)
 	} else {
@@ -241,8 +239,8 @@ func (expr *Expression) Next(current time.Time, nextStep int, dst *[]string) err
 	expr.Recursive(now, change, nextAt, &jump)
 	//fmt.Println("分",expr.Minute)
 	//fmt.Println("时",expr.Hour)
-	fmt.Println("日",expr.Dom)
-	fmt.Println("月",expr.Month)
+	//fmt.Println("日",expr.Dom)
+	//fmt.Println("月",expr.Month)
 	//fmt.Println("周",expr.Dow)
 	res := time.Date(nextAt.year, time.Month(nextAt.month), nextAt.day, nextAt.hour, nextAt.minute, 0, 0, now.Location())
 	*dst = append(*dst, res.Format("2006-01-02 15:04:05"))

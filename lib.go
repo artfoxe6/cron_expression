@@ -2,6 +2,7 @@ package cron_expression
 
 import (
 	"errors"
+	"log"
 	"regexp"
 	"sort"
 	"strings"
@@ -66,21 +67,23 @@ var (
 
 //将Month的英文格式转为数字
 func monthAliasToNumber(str string) string {
-	for k,v := range monthMaps {
-		str = strings.ReplaceAll(str,k,v)
+	for k, v := range monthMaps {
+		str = strings.ReplaceAll(str, k, v)
 	}
 	return str
 }
+
 //将Dow的英文格式转为数字
 func DowAliasToNumber(str string) string {
-	for k,v := range dowMaps {
-		str = strings.ReplaceAll(str,k,v)
+	for k, v := range dowMaps {
+		str = strings.ReplaceAll(str, k, v)
 	}
 	return str
 }
 
 //从规则中解析出范围内符合的数字
 func cronRuleParse(str string, limit []int) ([]int, error) {
+
 	limitList := numberList[limit[0] : limit[1]+1]
 	// "*"
 	if b, _ := regexp.MatchString(`^\*$`, str); b {
@@ -124,7 +127,8 @@ func cronRuleParse(str string, limit []int) ([]int, error) {
 		subArr := strings.Split(arr[0], "-")
 		for k, v := range temp {
 			if v < numberMaps[subArr[0]] || v > numberMaps[subArr[1]] {
-				temp = append(temp[:k], temp[k+1:]...)
+				log.Fatalln(temp[:k], temp[k+1:])
+				//temp = append(temp[:k], temp[k+1:]...)
 			}
 		}
 		return temp, nil

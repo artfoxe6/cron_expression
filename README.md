@@ -6,10 +6,10 @@
 ## 使用方式
 
 ```go
-// 参数: cron表达式 当地时区 当地时区和UTC的时差
+    // 参数: cron表达式 当地时区 当地时区和UTC的时差
 	expr := NewExpression("5 4 * * sun", "CST", 8*3600)
 	dst := make([]string, 0)
-	// 参数: 计算开始时间 计算下几个执行点 接收结果 tip:指定不同的开始时间可以实现时间穿越
+	// 参数: 计算开始时间 计算下几个执行点 接收结果 tip:指定不同的开始时间可以实现时间穿梭
 	err := expr.Next(time.Now(), 5, &dst)
 	if err != nil {
 		fmt.Println(err.Error())

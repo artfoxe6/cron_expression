@@ -63,6 +63,15 @@ var (
 		`fri`: `5`, `friday`: `5`,
 		`sat`: `6`, `saturday`: `6`,
 	}
+	alias = map[string]string{
+		"@yearly":   "0 0 1 1 *",
+		"@annually": "0 0 1 1 *",
+		"@monthly":  "0 0 1 * *",
+		"@weekly":   "0 0 * * 0",
+		"@midnight": "0 0 * * *",
+		"@daily":    "0 0 * * *",
+		"@hourly":   "0 * * * *",
+	}
 )
 
 //将Month的英文格式转为数字

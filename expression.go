@@ -47,6 +47,13 @@ func NewExpression(cronExpr, locationName string, locationOffset int) *Expressio
 
 //解析
 func (expr *Expression) Parse() error {
+	if strings.ContainsRune(expr.CronRule, '@') {
+		v, ok := alias[expr.CronRule]
+		if !ok {
+			return errors.New("不支持的宏")
+		}
+		expr.CronRule = v
+	}
 	ruleItems := strings.Split(expr.CronRule, " ")
 	if len(ruleItems) != 5 {
 		return errors.New("cron规则格式错误")

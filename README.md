@@ -2,7 +2,7 @@
 
 #### 实现了cron的标准定义,以及部分非标准宏
 
-支持的标准定义
+标准定义
 
 | Field  |  Required |  Allowed values | Allowed special characters   |
 | ------------ | ------------ | ------------ | ------------ |

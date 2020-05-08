@@ -83,7 +83,7 @@ func monthAliasToNumber(str string) string {
 }
 
 //将Dow的英文格式转为数字
-func DowAliasToNumber(str string) string {
+func dowAliasToNumber(str string) string {
 	for k, v := range dowMaps {
 		str = strings.ReplaceAll(str, k, v)
 	}

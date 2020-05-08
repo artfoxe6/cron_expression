@@ -25,15 +25,19 @@
 #### 使用方式
 
 ```
-    expr := NewExpression("* 1-10/2 * */2 *", "CST", 8*3600)
-	dst := make([]string, 0)
-	err := expr.Next(time.Now(), 5, &dst)
-	if err != nil {
-		log.Fatalln(err.Error())
-	}
-	for _, v := range dst {
-		log.Println(v)
-	}
+go get github.com/codeab/cron_expression@v1.0.1
+```
+
+```
+expr := cron_expression.NewExpression("* 1-10/2 * */2 *", "CST", 8*3600)
+dst := make([]string, 0)
+err := expr.Next(time.Now(), 5, &dst)
+if err != nil {
+    log.Fatalln(err.Error())
+}
+for _, v := range dst {
+    fmt.Println(v)
+}
 ```
 
 #### 不支持

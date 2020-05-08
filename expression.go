@@ -78,7 +78,7 @@ func (expr *expression) parse() error {
 	if err != nil {
 		return errors.New("月" + err.Error())
 	}
-	dowExpr := DowAliasToNumber(ruleItems[dowKey])
+	dowExpr := dowAliasToNumber(ruleItems[dowKey])
 	expr.dow, err = cronRuleParse(dowExpr, []int{0, 6})
 	if err != nil {
 		return errors.New("周(月)" + err.Error())

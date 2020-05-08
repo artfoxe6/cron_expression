@@ -29,7 +29,7 @@ const (
 	DowKey
 )
 
-//创建一个表达式
+//创建一个表达式 参数实例: "* 1-10/2,1,2,3 * */2 *", "CST", 8*3600
 func NewExpression(cronExpr, locationName string, locationOffset int) *Expression {
 	return &Expression{
 		Minute:         make([]int, 0),
@@ -222,6 +222,8 @@ func (expr *Expression) weekToDay(now time.Time, change *change, nextAt *nextAt)
 }
 
 //计算下一个执行日期
+//开始时间,下几个执行点 接收结果
+//tip:指定不同的开始时间可以实现时间穿梭
 func (expr *Expression) Next(current time.Time, nextStep int, dst *[]string) error {
 	if expr.IsParse == false {
 		err := expr.Parse()

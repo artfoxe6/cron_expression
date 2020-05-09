@@ -55,7 +55,7 @@ func BenchmarkExpression(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		expr := NewExpression("* 1-10/2 * */2 *", "CST", 8*3600)
 		dst := make([]string, 0)
-		_ = expr.Next(time.Now(), 5, &dst)
+		_ = expr.Next(time.Now(), 1, &dst)
 	}
 }
 

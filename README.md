@@ -25,7 +25,7 @@
 #### 使用方式
 
 ```
-go get github.com/codeab/cron_expression@v1.0.1
+go get github.com/codeab/cron_expression@v1.0.2
 ```
 
 ```

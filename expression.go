@@ -104,6 +104,7 @@ type nextAt struct {
 	week   int
 }
 
+//计算下一个month
 func (expr *expression) nextMonth(now time.Time, change *change, nextAt *nextAt, jump *string) bool {
 	change.month = 0
 	change.day = 0
@@ -129,6 +130,7 @@ func (expr *expression) nextMonth(now time.Time, change *change, nextAt *nextAt,
 	expr.weekToDay(now, change, nextAt)
 	return true
 }
+//计算下一个day
 func (expr *expression) nextDay(now time.Time, change *change, nextAt *nextAt, jump *string) bool {
 	current := now.Day()
 	if *jump != "day" {
@@ -161,6 +163,7 @@ func (expr *expression) nextDay(now time.Time, change *change, nextAt *nextAt, j
 	}
 	return true
 }
+//计算下一个hour
 func (expr *expression) nextHour(now time.Time, change *change, nextAt *nextAt, jump *string) bool {
 	current := now.Hour()
 	if *jump != "hour" {
@@ -193,6 +196,7 @@ func (expr *expression) nextHour(now time.Time, change *change, nextAt *nextAt, 
 	}
 	return true
 }
+//计算下一个minute
 func (expr *expression) nextMinute(now time.Time, change *change, nextAt *nextAt, jump *string) bool {
 	current := now.Minute()
 	if change.hour == 1 || change.day == 1 || change.month == 1 {
@@ -214,7 +218,7 @@ func (expr *expression) weekToDay(now time.Time, change *change, nextAt *nextAt)
 	if ruleItems[dowKey] == "*" {
 		return
 	}
-	//dom和dow任意一个存在 间隔符 / 将形成交集
+	//dom和dow任意一个以*/开头将形成交集
 	days := getDayByWeek(now.Year(), nextAt.month, expr.dow, expr.locationName, expr.locationOffset)
 	if strings.Contains(ruleItems[dowKey], "*/") || strings.Contains(ruleItems[domKey], "*/") {
 		expr.dom = arrayIntersect(expr.dom, days)
@@ -246,11 +250,6 @@ func (expr *expression) Next(current time.Time, nextStep int, dst *[]string) err
 	//当前周期的上一个周期是否需要跳跃
 	var jump = ""
 	expr.recursive(now, change, nextAt, &jump)
-	//fmt.Println("分",expr.minute)
-	//fmt.Println("时",expr.hour)
-	//fmt.Println("日",expr.dom)
-	//fmt.Println("月",expr.month)
-	//fmt.Println("周",expr.dow)
 	res := time.Date(nextAt.year, time.Month(nextAt.month), nextAt.day, nextAt.hour, nextAt.minute, 0, 0, now.Location())
 	*dst = append(*dst, res.Format("2006-01-02 15:04:05"))
 	if nextStep == 1 {

@@ -25,12 +25,14 @@
 #### 使用方式
 
 ```
-go get github.com/codeab/cron_expression@v1.0.2
+go get github.com/classfoxe6/cron_expression@v1.0.3
 ```
 
 ```
+//支持标准格式 分 时 日 月 周,以及短语 @monthly @daily 等
 expr := cron_expression.NewExpression("* 1-10/2 * */2 *", "CST", 8*3600)
 dst := make([]string, 0)
+//tip: 当前时间可以向前或向后任意指定,实现时间穿梭,达到计算当前时间之前的执行点
 err := expr.Next(time.Now(), 5, &dst)
 if err != nil {
     log.Fatalln(err.Error())
@@ -56,17 +58,12 @@ for _, v := range dst {
 
 #### 存在争议的地方
 
-当(日)dom和(周)dow均不为*时,存在一些争议, <br/>
-目前cron实现标准其实不统一,根据wikipedia说明, <br/>
-两者的关系应该是逻辑或,也就是满足dom或dow就执行 <br/>
-而本项目参照了 crontab.guru 的实现标准, <br/>
-在原有基础上增加了一层判断: <br/>
-如果任意一方以\*/开头,两者的关系则为逻辑与,相反为逻辑或 <br/>
+当(日)dom和(周)dow均不为*时,存在一些争议, 目前cron实现标准其实不统一,根据wikipedia说明, <br/>
+两者的关系应该是逻辑或,也就是满足dom或dow就执行,而本项目参照了 crontab.guru 的实现标准, <br/>
+在原有基础上增加了一层判断: 如果任意一方以\*/开头,两者的关系则为逻辑与,相反为逻辑或 <br/>
 
 #### 结果校验
-由于实现标准的区别,复杂的表达式可能存在不相同的结果<br/>
-https://crontab.guru/ <br/>
-https://tool.lu/crontab/
+https://crontab.guru/
 
 #### 参考文献
 https://en.wikipedia.org/wiki/Cron <br/>

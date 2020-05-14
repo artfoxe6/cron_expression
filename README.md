@@ -28,7 +28,7 @@
 go get github.com/artfoxe6/cron_expression@v1.0.5
 ```
 
-```
+```go
 //支持标准格式 分 时 日 月 周,以及短语 @monthly @daily 等
 expr := cron_expression.NewExpression("* 1-10/2 * */2 *", "CST", 8*3600)
 dst := make([]string, 0)

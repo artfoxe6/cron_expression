@@ -1,8 +1,8 @@
 # cron_expression
 
-#### 实现了cron的标准定义,以及部分非标准宏
+Implemented the standard definition of cron
 
-标准定义
+#### Supported standard definitions
 
 | Field  |  Required |  Allowed values | Allowed special characters   |
 | ------------ | ------------ | ------------ | ------------ |
@@ -12,7 +12,7 @@
 |  Month | Yes  |  1-12 or JAN-DEC |  \* , - /  |
 | Day of week  |  Yes |  0-6 or SUN-SAT |  \* , - / |
 
-支持的非标准宏
+#### Supported non-standard definitions
 
 | Entry | Description | Equivalent to |
 | ------ | ------ | ------ |
@@ -22,24 +22,35 @@
 | @daily (or @midnight) | Run once a day at midnight | 0 0 \* \* \* |
 | @hourly | Run once an hour at the beginning of the hour | 0 \* \* \* \* |
 
-#### 使用方式
+#### Install
 
 ```
 go get github.com/artfoxe6/cron_expression@v1.0.5
 ```
 
+#### Usage
+
 ```go
-//支持标准格式 分 时 日 月 周,以及短语 @monthly @daily 等
-expr := cron_expression.NewExpression("* 1-10/2 * */2 *", "CST", 8*3600)
-dst := make([]string, 0)
-//tip: 当前时间可以向前或向后任意指定,实现时间穿梭,达到计算当前时间之前的执行点
-err := expr.Next(time.Now(), 5, &dst)
-if err != nil {
-    log.Fatalln(err.Error())
+package main
+
+import (
+	"fmt"
+	"github.com/artfoxe6/cron_expression"
+	"log"
+	"time"
+)
+func main() {
+	expr := cron_expression.NewExpression("* 1-10/2 * */2 *", "CST", 8*3600)
+	dst := make([]string, 0)
+	err := expr.Next(time.Now(), 5, &dst)
+	if err != nil {
+		log.Fatalln(err.Error())
+	}
+	for _, v := range dst {
+		fmt.Println(v)
+	}
 }
-for _, v := range dst {
-    fmt.Println(v)
-}
+
 ```
 ```
 2020-05-09 09:38:00
@@ -49,23 +60,24 @@ for _, v := range dst {
 2020-05-09 09:42:00
 ```
 
-#### 不支持
+#### Not Support Expression
 
-|  实例 | 请替换  |
+|  example | replace to  |
 | ------------ | ------------ |
 | \* \* \*,27 \* \*   | \* \* \* \* \*  |
 | \* 1-10/2,1,2,3 \* \* \*  | \* 1,2,3,5,7,9 \* \* \*  |
 
-#### 存在争议的地方
+#### Controversial
 
-当(日)dom和(周)dow均不为*时,存在一些争议, 目前cron实现标准其实不统一,根据wikipedia说明, <br/>
-两者的关系应该是逻辑或,也就是满足dom或dow就执行,而本项目参照了 crontab.guru 的实现标准, <br/>
-在原有基础上增加了一层判断: 如果任意一方以\*/开头,两者的关系则为逻辑与,相反为逻辑或 <br/>
+On the basis of standards: <br />
+If both dom and dow is not \*, anyone starts with \*/ <br />
+The relationship becomes logical AND, <br />
+Else logical OR <br />
 
-#### 结果校验
+#### Results verification
 https://crontab.guru/
 
-#### 参考文献
+#### references
 https://en.wikipedia.org/wiki/Cron <br/>
 https://pubs.opengroup.org/onlinepubs/007904975/utilities/crontab.html <br/>
 https://crontab.guru/cron-bug.html <br/>

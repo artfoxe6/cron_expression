@@ -1,6 +1,6 @@
 # cron_expression
 
-Implemented the standard definition of cron
+Implemented the standard definition of cron expression
 
 #### Supported standard definitions
 

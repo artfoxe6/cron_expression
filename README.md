@@ -67,8 +67,7 @@ func main() {
 
 On the basis of standards: <br />
 If both dom and dow is not \*, anyone starts with \*/ <br />
-The relationship becomes logical AND, <br />
-Else logical OR <br />
+The relationship becomes logical AND, Else logical OR <br />
 
 ## Results verification
 https://crontab.guru/

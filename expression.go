@@ -232,10 +232,10 @@ func (expr *expression) weekToDay(now time.Time, change *change, nextAt *nextAt)
 	}
 }
 
-//计算下一个执行日期
-//开始时间,下几个执行点 接收结果
-//tip:指定不同的开始时间可以实现时间穿梭
-func (expr *expression) Next(current time.Time, nextStep int, dst *[]string) error {
+//计算接下来的任意执行点
+//参数: "当前时间",下几个执行点 接收结果
+//tip: 指定不同的"当前时间"可以实现向前向后的时间穿梭
+func (expr *expression) NextAny(current time.Time, nextStep int, dst *[]string) error {
 	if expr.isParse == false {
 		err := expr.parse()
 		if err != nil {
@@ -255,7 +255,26 @@ func (expr *expression) Next(current time.Time, nextStep int, dst *[]string) err
 	if nextStep == 1 {
 		return nil
 	}
-	return expr.Next(res, nextStep-1, dst)
+	return expr.NextAny(res, nextStep-1, dst)
+}
+//下一个时间点
+func (expr *expression) Next(current time.Time) (*time.Time,error) {
+	if expr.isParse == false {
+		err := expr.parse()
+		if err != nil {
+			return nil,err
+		}
+	}
+	now := current.In(time.FixedZone(expr.locationName, expr.locationOffset))
+	var (
+		change = &change{}
+		nextAt = &nextAt{}
+	)
+	//当前周期的上一个周期是否需要跳跃
+	var jump = ""
+	expr.recursive(now, change, nextAt, &jump)
+	res := time.Date(nextAt.year, time.Month(nextAt.month), nextAt.day, nextAt.hour, nextAt.minute, 0, 0, now.Location())
+	return &res,nil
 }
 
 //计算下一个日期

@@ -1,5 +1,4 @@
 # cron_expression
-
 Implemented the standard definition of cron expression
 
 ## Supported standard definitions
@@ -24,9 +23,15 @@ Implemented the standard definition of cron expression
 
 ## Install
 
-go get github.com/artfoxe6/cron_expression@v1.0.5
+```
+go get github.com/artfoxe6/cron_expression@v1.1.0
+```
+
 
 ## Usage
+
+func (expr *expression) Next(current time.Time) (*time.Time,error) <br />
+func (expr *expression) NextAny(current time.Time, nextStep int, dst *[]string) error <br />
 
 ```go
 package main
@@ -39,23 +44,16 @@ import (
 )
 func main() {
 	expr := cron_expression.NewExpression("* 1-10/2 * */2 *", "CST", 8*3600)
-	dst := make([]string, 0)
-	err := expr.Next(time.Now(), 5, &dst)
+	next,err := expr.Next(time.Now())
 	if err != nil {
 		log.Fatalln(err.Error())
 	}
-	for _, v := range dst {
-		fmt.Println(v)
-	}
+	fmt.Println(next.Format("2006-01-02 15:04:05"))
 }
 
 ```
 ```
-2020-05-09 09:38:00
-2020-05-09 09:39:00
-2020-05-09 09:40:00
-2020-05-09 09:41:00
-2020-05-09 09:42:00
+2020-05-09 10:48:00
 ```
 
 ## Not Support Expression
